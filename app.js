@@ -1,18 +1,16 @@
-require('dotenv').config();
+require("dotenv").config();
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const express = require("express");
+const mongoose = require("mongoose");
+const logger = require("morgan");
+const path = require("path");
+const session = require("express-session");
+const passport = require("passport");
+const cors = require("cors");
 
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const express = require('express');
-const favicon = require('serve-favicon');
-const hbs = require('hbs');
-const mongoose = require('mongoose');
-const logger = require('morgan');
-const path = require('path');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session)
-const helpers = require('handlebars-helpers');
-
-hbs.registerHelper(helpers());
+//Include passport configuration
+require("./configs/passport");
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -38,47 +36,61 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
+//allows heroku to recieve connection from other websites
+app.set("trust proxy", 1);
 
 //Express session setup
 app.use(session({
   secret: process.env.SESSION_SECRET,
+  saveUninitialized: true,
+  resave: false,
   cookie: {
     sameSite: true,
     httpOnly: true,
     maxAge: 600000 // ms = 1min
   },
   rolling: true,
-  store: new MongoStore({
-    mongooseConnection: mongoose.connection,
-    ttl: 86400 // mins = 24hrs
   })
-}))
+);
 
-// Express View engine setup
-
-app.use(require('node-sass-middleware')({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  sourceMap: true
-}));
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-
-
-
+//Initialize passport
+app.use(passport.initialize());
+//Connect passport to the session
+app.use(passport.session());
 // default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.title = "Final Project - Web App";
+app.use(
+  cors({
+    credentials: true,
+    origin: [process.env.CLIENT_HOSTNAME],
+  })
+);
+
+// 
 
 const index = require('./routes/index');
 app.use('/', index);
 
-const recipe = require('./routes/recipe');
-app.use('/', recipe);
+// const contacts = require('./routes/contacts');
+// app.use('/api', contacts);
 
 const auth = require('./routes/auth');
-app.use('/', auth);
+app.use('/api', auth);
+
+const cities = require('./routes/cities');
+app.use('/api', cities);
 
 module.exports = app;
+
+
+//app.use(require('node-sass-middleware')({
+//   src: path.join(__dirname, 'public'),
+//   dest: path.join(__dirname, 'public'),
+//   sourceMap: true
+// }));
+
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'hbs');
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
+

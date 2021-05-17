@@ -18,7 +18,7 @@ const recipeSchema = new Schema({
   imageUrl: String,
   like: [{
     type: Schema.Types.ObjectId,
-    ref: 'Like' // relates to the Author model
+    ref: 'Like'
   }]
 }, {
   timestamps: true

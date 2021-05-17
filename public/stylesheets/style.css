@@ -134,10 +134,6 @@ h3, h4, h5, h6 {
 .user-bio-text-a {
   font-size: small; }
 
-.user-profile-post-img-parent {
-  display: flex;
-  width: auto; }
-
 .user-profile-post-img {
   max-width: 70%;
   border-radius: 3%;
@@ -152,10 +148,6 @@ h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
   border-radius: 50%; }
 
-.user-profile-recipe {
-  display: flex;
-  flex-direction: row; }
-
 .user-profile-heading {
   font-family: "Assistant";
   color: #919191;
@@ -165,13 +157,8 @@ h3, h4, h5, h6 {
   color: #e4c861;
   margin-left: 15%; }
 
-.user-profile-text {
-  margin-right: 3rem;
-  margin-top: 1rem;
-  text-align: justify;
-  color: #6f6f6f;
-  width: 50%;
-  font-size: smaller; }
+.favorites-description {
+  flex-direction: row; }
 
 .favorites-btns {
   display: flex;
@@ -180,11 +167,18 @@ h3, h4, h5, h6 {
   margin-top: 1rem; }
 
 .favorites-text {
-  display: flex;
-  flex-direction: row; }
+  flex-direction: column;
+  display: block; }
+
+.user-profile-post-img-parent {
+  width: 100%; }
 
 .favorites-food-img {
-  margin-top: 3rem;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 1rem;
   border-radius: 3%; }
 
 .user {
