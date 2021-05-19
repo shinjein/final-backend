@@ -10,9 +10,8 @@ const passport = require('passport');
 router.post("/signup", async (req, res) => {
   const { 
     username, 
-    screenname,
+    password,
     email, 
-    password, 
     base
      } = req.body;
 
@@ -47,9 +46,8 @@ router.post("/signup", async (req, res) => {
   try {
     user = await User.create({
       username,
-      screenname,
-      email,
       password: hashedPassword,
+      email,
       base
     });
     res.json(user);

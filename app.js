@@ -80,6 +80,9 @@ app.use('/api', auth);
 const cities = require('./routes/cities');
 app.use('/api', cities);
 
+const contacts = require('./routes/contacts');
+app.use('/api', contacts);
+
 module.exports = app;
 
 

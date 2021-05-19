@@ -2,14 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: String, // PHONE NUMBER!!!!!!
-  screenname: String, // like a screenname
-  email: String, // authentificaiton - must be unique - used to log in
+  username: String,
   password: String, 
-  base: String,
+  email: String,
+  base: String, //base city
   city: [{
     type: String,
     createdAt: Number
+  }],
+  contacts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }]
   // searchedCities: [ String ]
 });
