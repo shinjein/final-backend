@@ -19,16 +19,80 @@ router.get("/mycontacts", async (req, res) => {
   }
 })
 
-// router.get("/citycontacts," async (req, res) => {
-//   try{
-//     //1. find contacts based in City
+router.get("/citycontacts/:city", async (req, res) => {
+  try{
+    const city = req.params.city
+    let myFirstLevelConnections = [];
+    let mySecondLevelConnections = []
+    //1. show contacts based in that ciy city
+    currentLoggedUser = await User.findById(req.user._id).populate("contacts")
+    myFirstLevelConnections = currentLoggedUser.contacts;
+    //Franco, Mariana
+    let connectionsPromises = [];
+    myFirstLevelConnections.forEach(async (contact) => {
+      let secondLevel = contact.contacts;
+      secondLevel.forEach( async (secondLevelContactId) => {
+        connectionsPromises.push(User.findOne({_id : secondLevelContactId}))
+      })
+    })
+    const foundAllSecondConnections = await Promise.all(connectionsPromises);
+    const cityBased = [];
+     foundAllSecondConnections.forEach((contact) => {
+      if (contact.base === city) {
+        cityBased.push(contact._id);
+      }
+    })
+    let contactsIdsToReturn = [];
 
-//     //2. find contacts with contacts based in City
-//   } catch (e) {
-//     res.status(500).json(`error occurred ${e}`);
-//     return;
-//   }
-// })
+    cityBased.forEach((_cityBased) => {
+       myFirstLevelConnections.forEach(async (contact) => {
+        if (contact.contacts.indexOf(_cityBased) !== -1) {
+          contactsIdsToReturn.push(contact._id)
+        }
+      })
+    })
+   
+    let contactToReturnPromises = [];
+    contactsIdsToReturn.forEach((contactToReturn) => {
+      contactToReturnPromises.push(User.findOne({_id : contactToReturn}))
+    })
+
+    const contactsToReturn = await Promise.all(contactToReturnPromises);
+    
+    let usernames = [];
+    contactsToReturn.forEach((user) => {
+      usernames.push(user.username);
+    })
+
+    res.status(200).json(usernames);
+  }
+    catch(e) {
+    console.log("error",e)
+    }
+})
+
+router.get("/citycontacts/:city/:username", async (req, res) => {
+  try{
+    const myContact = req.params.username
+    const city = req.params.city;
+    //1. show contacts based in that ciy city
+    const connectionsData = await User.findOne({username: myContact}).populate("contacts")
+    const cityBased = [];
+    connectionsData.contacts.forEach((contact) => {
+      if (contact.base === city) {
+        cityBased.push(contact);
+      }})
+    let connections = [];
+    cityBased.forEach((connection) => {
+      connections.push(connection.username);
+    })
+    console.log(connections)
+    res.status(200).json(connections);
+  }
+    catch(e) {
+    console.log("error",e)
+    }
+})
 
 router.post("/addcontact", async (req, res) => {
   try {

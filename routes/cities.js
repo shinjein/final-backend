@@ -50,11 +50,15 @@ router.post("/searchedcities", async (req, res) => {
 
 router.get("/listedcities", async (req, res) => {
   try{
-    console.log(req.user)
-    const listCities = await City.find( 
-      {user: req.user._id}, {city: 1})
-    console.log(listCities)
-    res.json(listCities);
+    console.log()
+    const userCities = await User.findById(req.user._id);
+    console.log(userCities.city)
+    res.json(userCities.city);
+    // console.log(req.user)
+    // const listCities = await City.find( 
+    //   {user: req.user._id}, {city: 1})
+    // console.log(listCities)
+    // res.json(listCities);
   }
   catch (e) {
     res.status(500).json(`error occurred ${e}`);

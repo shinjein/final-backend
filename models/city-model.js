@@ -12,7 +12,7 @@ const citySchema = new Schema({
   },
   contact: [{ //contacts who know a user in this city
     type: Schema.Types.ObjectId,
-    ref: 'Contact'
+    ref: 'User'
   }]
 }, {
   timestamps: true
