@@ -49,6 +49,10 @@ app.use(session({
     secure: true, // set to true when deploying
     httpOnly: false, //set to false when deploying
     maxAge: 60000000 // ms = 1min
+    // sameSite: true, // set to 'none' when deploying true
+    // secure: false, // set to true when deploying
+    // httpOnly: true, //set to false when deploying
+    // maxAge: 60000000 // ms = 1min
   },
   rolling: true,
   })
