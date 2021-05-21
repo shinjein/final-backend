@@ -61,7 +61,9 @@ router.get("/citycontacts/:city", async (req, res) => {
     
     let usernames = [];
     contactsToReturn.forEach((user) => {
-      usernames.push(user.username);
+      if(!usernames.username) {
+        usernames.push(user.username);
+      }
     })
 
     res.status(200).json(usernames);
@@ -85,7 +87,9 @@ router.get("/citycontacts/:city/:username", async (req, res) => {
     let connections = [];
     cityBased.forEach((connection) => {
       connections.push(connection.username);
-    })
+    }) 
+
+
     console.log(connections)
     res.status(200).json(connections);
   }

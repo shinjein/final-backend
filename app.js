@@ -45,7 +45,7 @@ app.use(session({
   saveUninitialized: true,
   resave: false,
   cookie: {
-    sameSite: 'none', // set to 'none' when deploying true
+    sameSite: "none", // set to 'none' when deploying true
     secure: true, // set to true when deploying
     httpOnly: false, //set to false when deploying
     maxAge: 60000000 // ms = 1min

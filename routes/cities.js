@@ -14,6 +14,7 @@ router.post("/createcitylist", async (req, res) => {
           city,
           user 
         });
+
         console.log(`${user} searched for ${city}`)
         res.json(citylist);
         console.log(citylist)
@@ -37,7 +38,9 @@ router.post("/searchedcities", async (req, res) => {
           city: city
         }
       });
-    res.json(user);
+    const sortName = checkUserCity.city.sort()
+    console.log("sorted city", sortName)
+    res.json(sortName);
     } else {
        res.json('city already included');
     }
