@@ -15,7 +15,7 @@ const citySchema = new Schema({
     ref: 'User'
   }]
 }, {
-  timestamps: true
+  createdAt: true
 });
 
 module.exports = model('City', citySchema);
